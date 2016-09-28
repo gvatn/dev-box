@@ -1,0 +1,35 @@
+---
+- name: Sbt repo
+  apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present validate_certs=no
+- name: Sbt repo key
+  apt_key: keyserver=hkp://keyserver.ubuntu.com:80 state=present id='642AC823'
+- name: Apt sbt
+  apt: name=sbt state=present update_cache=yes
+- name: Unzip
+  apt: name=unzip state=installed
+- stat: path='/opt/activator-dist-{{ lightbend_activator_version }}'
+  register: activatordir
+  
+- name: Download Typesafe Activator
+  when: activatordir.stat.exists == false
+  get_url: url={{ lightbend_activator_url }} dest="/tmp/{{ lightbend_activator_archive }}"
+
+- name: Unzip Typesafe Activator
+  when: activatordir.stat.exists == false
+  unarchive: copy=no src='/tmp/{{ lightbend_activator_archive }}' dest=/opt
+
+- name: make executable
+  file: >-
+    path='/opt/activator-dist-{{lightbend_activator_version}}/bin/activator'
+    mode=0755
+  
+- name: Link Typesafe Activator
+  file: src='/opt/activator-dist-{{ lightbend_activator_version }}' dest=/opt/activator state=link
+
+- name: include activator in the PATH
+  copy: >-
+    src=roles/scala-activator/etc/profile.d/activator.sh
+    dest=/etc/profile.d/activator.sh
+    mode=0644
+    owner=root
+    group=root

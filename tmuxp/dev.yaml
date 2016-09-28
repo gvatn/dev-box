@@ -1,0 +1,9 @@
+session_name: dev
+windows:
+- window_name: editor
+  layout: main-vertical
+  panes:
+    - focus: true
+      shell_command:
+        - nvim /vagrant/dev-machine.yml
+    - pane

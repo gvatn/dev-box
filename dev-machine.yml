@@ -1,0 +1,48 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    home: /home/ubuntu
+    document_root: /vagrant
+  roles:
+    - java
+    - scala-activator
+  pre_tasks:
+    - name: Apt update
+      apt:
+        update_cache=yes
+    - name: Apt get
+      apt: name={{ item }} state=installed
+      with_items:
+        - git
+        - curl
+        - tig
+        - gdb
+        - cgdb
+        - bash-completion
+        - make
+        - build-essential
+        - tree
+        - htop
+        - tmux
+        - man-db
+        - python
+        - python-dev
+        - python3.5
+        - locales
+        - language-pack-en
+        - language-pack-nb
+        - gnome-terminal
+    - name: Pip
+      pip:
+        name: watchdog tmuxp neovim
+    - name: Vim config link
+      file: src=/vagrant/init.vim dest="{{ home }}/.config/nvim/init.vim" state=link
+    - name: Vim plug
+      get_url:
+        url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        dest: "{{ home }}/.config/nvim/autoload/plug.vim"
+    - name: Link tmuxp configs
+      file: src=/vagrant/tmuxp dest="{{ home }}/.tmuxp" state=link
+    - name: Link tmux conf
+      file: src=/vagrant/.tmux.conf dest="{{ home }}/.tmux.conf" state=link
