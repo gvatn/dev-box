@@ -1,4 +1,4 @@
-session_name: dev
+session_name: wasm
 start_directory: /vagrant/projects
 windows:
 - window_name: editor
@@ -6,5 +6,5 @@ windows:
   panes:
     - focus: true
       shell_command:
-        - nvim /vagrant/dev-machine.yml
+        - nvim
     - pane

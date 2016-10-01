@@ -14,6 +14,12 @@ set expandtab
 " set encoding=utf-8
 set number
 
+" Quick esc from insert mode
+inoremap <C-j> <Esc>
+nnoremap <C-p> :FZF<CR>
+nnoremap <S-j> 3j
+nnoremap <S-k> 3k
+
 " Plugins
 call plug#begin('~/.vim/plugged')
 
@@ -40,9 +46,9 @@ call plug#end()
 " Deoplete
 " let g:deoplete#enable_at_startup=1
 
-silent! nmap <C-p> :NERDTreeToggle<CR>
+nmap <C-o> :NERDTreeToggle<CR>
 silent! map <F2> :NERDTreeToggle<CR>
-silent! map <C-o> :NERDTreeFind<CR>
+silent! map <C-O> :NERDTreeFind<CR>
 let g:NERDTreeToggle="<F2>"
 let g:NERDTreeMapActivateNode="<F3>"
 let g:NERDTreeMapPreview="<F4>"

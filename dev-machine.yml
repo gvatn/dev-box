@@ -4,9 +4,11 @@
   vars:
     home: /home/ubuntu
     document_root: /vagrant
+    user: ubuntu
   roles:
     - java
     - scala-activator
+    - oh-my-zsh
   pre_tasks:
     - name: Apt update
       apt:
@@ -46,3 +48,21 @@
       file: src=/vagrant/tmuxp dest="{{ home }}/.tmuxp" state=link
     - name: Link tmux conf
       file: src=/vagrant/.tmux.conf dest="{{ home }}/.tmux.conf" state=link
+    - name: Ensure .bash_aliases
+      file:
+          path="{{ home }}/.bash_aliases"
+          state=touch
+          owner="{{ user }}"
+    - name: Include .bash_aliases in .bashrc
+      lineinfile:
+        dest="{{ home }}/.bashrc"
+        line=". ~/.bash_aliases" 
+        regexp="^\. ~/\.bash_aliases$"
+    - name: Aliases block
+      blockinfile:
+        dest: "{{ home }}/.bash_aliases"
+        content: |
+            alias e='nvim'
+            alias f='fab -f /vagrant/fabfile.py'
+            alias i='invoke'
+            alias t='tmuxp load'
