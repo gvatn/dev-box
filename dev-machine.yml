@@ -9,6 +9,7 @@
     - java
     - scala-activator
     - oh-my-zsh
+    - wasm
   pre_tasks:
     - name: Apt update
       apt:

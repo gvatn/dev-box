@@ -40,6 +40,9 @@ Plug 'scrooloose/syntastic'
 Plug 'Shougo/neosnippet.vim'
 call plug#end()
 
+set background=light
+colorscheme solarized
+
 " Neomake
 " autocmd! BufWritePost * Neomake
 

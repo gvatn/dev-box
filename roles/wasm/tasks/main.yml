@@ -1,0 +1,35 @@
+---
+- name: Apt packages
+  apt: name={{ item }} state=installed
+  with_items:
+    - build-essential
+    - g++
+    - libtool
+    - libtool-bin
+    - autoconf
+    - automake
+    - cmake
+    - pkg-config
+    - nodejs
+    - npm
+- stat: path="/home/ubuntu/emsdk_portable"
+  register: emsdk_dir
+- name: Get portable
+  when: emsdk_dir.stat.exists == false
+  get_url:
+      url: https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
+      dest: /home/ubuntu/emsdk-portable.tar.gz
+- name: Unarchive portable
+  when: emsdk_dir.stat.exists == false
+  unarchive: src="/home/ubuntu/emsdk-portable.tar.gz"
+      dest="/home/ubuntu/"
+- name: Install emsdk
+  when: emsdk_dir.stat.exists == false
+  shell: cd /home/ubuntu/emsdk_portable \
+         && ./emsdk update \
+         && ./emsdk install latest \
+         && ./emsdk activate latest
+- name: Set emsdk environment on start
+  lineinfile: dest=/home/ubuntu/.bashrc
+              line='source ~/emsdk_portable/emsdk_env.sh > /dev/null'
+              regexp='^source ~/emsdk_portable/emsdk_env\.sh'
