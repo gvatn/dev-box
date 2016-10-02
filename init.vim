@@ -10,15 +10,18 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Search
+set ignorecase
+set smartcase
+set hlsearch
+
 " Neovim by default uses utf-8
 " set encoding=utf-8
 set number
 
-" Quick esc from insert mode
-inoremap <C-j> <Esc>
-nnoremap <C-p> :FZF<CR>
-nnoremap <S-j> 3j
-nnoremap <S-k> 3k
+" vim-expand-region plugin
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -38,10 +41,37 @@ Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala'
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neosnippet.vim'
+Plug 'terryma/vim-expand-region'
 call plug#end()
 
 set background=light
 colorscheme solarized
+
+" Quick esc from insert mode
+inoremap jk <Esc>
+nnoremap <C-p> :FZF<CR>
+
+" Move a few lines with Shift + j/k
+nnoremap <S-j> 3j
+nnoremap <S-k> 3k
+
+let mapleader = ","
+let maplocalleader = ","
+
+" Open files http://vimcasts.org/episodes/the-edit-command/
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
+" Create directory relative to current file
+map <leader>d mkdir -p %%
+
+" Write file
+map <leader>s :w<cr>
+
+
 
 " Neomake
 " autocmd! BufWritePost * Neomake
