@@ -1,0 +1,25 @@
+---
+- name: Apt
+  apt: name={{ item }} state=installed 
+  with_items:
+      - build-essential
+      - make
+      - cmake
+      - gcc
+      - python
+      - zlib1g-dev
+      - subversion
+- file: path={{ home }}/source state=directory owner={{ user }}
+- stat: path={{ home }}/source/llvm 
+  register: llvm_source
+- subversion: repo=http://llvm.org/svn/llvm-project/llvm/trunk
+              dest={{ home }}/source/llvm
+  when: llvm_source.stat.exists == false
+- subversion: repo=http://llvm.org/svn/llvm-project/cfe/trunk
+              dest={{ home }}/source/llvm/tools/clang
+  when: llvm_source.stat.exists == false
+- subversion: repo=http://llvm.org/svn/llvm-project/clang-tools-extra/trunk
+              dest={{ home }}/source/llvm/tools/clang/tools/extra
+  when: llvm_source.stat.exists == false
+- name: Build clang+llvm
+  shell: cd {{ home }}/source/llvm && mkdir -p build && cd build && cmake -G "Unix Makefiles" .. && make 

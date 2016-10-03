@@ -10,6 +10,8 @@
     - scala-activator
     - oh-my-zsh
     - wasm
+      #- clang
+    - nodejs
   pre_tasks:
     - name: Apt update
       apt:
@@ -39,8 +41,10 @@
     - name: Pip
       pip:
         name: watchdog tmuxp neovim
+    - name: Neovim pip3
+      command: pip3 install neovim
     - name: Vim config link
-      file: src=/vagrant/init.vim dest="{{ home }}/.config/nvim/init.vim" state=link
+      file: src=/vagrant/init.vim dest="{{ home }}/.config/nvim/init.vim" state=link owner={{ user }}
     - name: Vim plug
       get_url:
         url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -67,3 +71,7 @@
             alias f='fab -f /vagrant/fabfile.py'
             alias i='invoke'
             alias t='tmuxp load'
+    - name: Source directory
+      file: path={{ home }}/source state=directory owner={{ user }}
+    - name: Link projects
+      file: src=/vagrant/projects dest="{{ home }}/projects" state=link owner={{ user }}

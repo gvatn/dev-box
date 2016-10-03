@@ -29,6 +29,8 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'jeetsukumaran/vim-buffergator'
 Plug 'benekastah/neomake'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Raimondi/delimitMate'
@@ -41,15 +43,24 @@ Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala'
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'terryma/vim-expand-region'
+Plug 'iCyMind/NeoSolarized'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'pearofducks/ansible-vim'
 call plug#end()
 
-set background=light
-colorscheme solarized
+set termguicolors
+set background=dark
+colorscheme NeoSolarized
 
 " Quick esc from insert mode
 inoremap jk <Esc>
-nnoremap <C-p> :FZF<CR>
+
+" CtrlP
+nnoremap <C-p> :CtrlP<CR>
+nnoremap <C-h> :CtrlPBuffer<CR>
+nnoremap <C-j> :CtrlPMRU<CR>
 
 " Move a few lines with Shift + j/k
 nnoremap <S-j> 3j
@@ -66,12 +77,17 @@ map <leader>ev :vsp %%
 map <leader>et :tabe %%
 
 " Create directory relative to current file
-map <leader>d mkdir -p %%
+map <leader>d :!mkdir -p %%
 
 " Write file
+map <leader>w :w<cr>
 map <leader>s :w<cr>
 
+" :q
+map <leader>q :q<cr>
 
+" Reload init.vim
+nmap <leader>v :so ~/.config/nvim/init.vim<cr>
 
 " Neomake
 " autocmd! BufWritePost * Neomake

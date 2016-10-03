@@ -13,4 +13,4 @@ def activator_ui():
     with ifconfig
     http://bplawler.tumblr.com/post/124256974918/typesafe-activator-on-a-vagrant-vm
     """
-    local('activatorui -Dhttp.address=10.0.2.15')
+    local('activator ui -Dhttp.address=10.0.2.15')
