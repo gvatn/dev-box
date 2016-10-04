@@ -21,5 +21,8 @@
 - subversion: repo=http://llvm.org/svn/llvm-project/clang-tools-extra/trunk
               dest={{ home }}/source/llvm/tools/clang/tools/extra
   when: llvm_source.stat.exists == false
+- stat: path={{ home }}/source/build/lib
+  register: llvm_build_lib
 - name: Build clang+llvm
   shell: cd {{ home }}/source && mkdir -p build && cd build && cmake -G "Unix Makefiles" ../llvm && make 
+  when: llvm_build_lib.stat.exists == false

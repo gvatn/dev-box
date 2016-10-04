@@ -10,14 +10,21 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+set cursorline " highlight cursor line
+set clipboard=unnamed " share clipboard with system
+
 " Search
 set ignorecase
 set smartcase
 set hlsearch
 
-" Neovim by default uses utf-8
 " set encoding=utf-8
-set number
+set number " line number
+
+" Backup/swap files
+set nobackup
+set nowritebackup
+set noswapfile
 
 " vim-expand-region plugin
 vmap v <Plug>(expand_region_expand)
@@ -51,10 +58,20 @@ Plug 'Shougo/neoinclude.vim'
 Plug 'zchee/deoplete-clang'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'pearofducks/ansible-vim'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
+
+" Airline font
+let g:airline_powerline_fonts = 1
+set gfn=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ Regular:h12
 
 let g:deoplete#sources#clang#libclang_path="/home/ubuntu/source/build/lib/libclang.so"
 let g:deoplete#sources#clang#clang_header="/home/ubuntu/source/build/lib/clang"
+
+" Omnicomplete options
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"

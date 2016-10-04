@@ -83,3 +83,9 @@
           content: |
               export VISUAL=nvim
               export EDITOR=nvim
+
+    - name: Link .fonts.conf
+      file: src=/vagrant/.fonts.conf dest={{ home }}/.fonts.conf state=link owner={{ user }}
+
+    - name: Link .fonts folder
+      file: src=/vagrant/fonts dest={{ home }}/.fonts state=link owner={{ user }}
