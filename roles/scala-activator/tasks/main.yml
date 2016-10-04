@@ -33,3 +33,7 @@
     mode=0644
     owner=root
     group=root
+
+- name: Pip dependencies for ensime
+  pip:
+    name: websocket-client sexpdata

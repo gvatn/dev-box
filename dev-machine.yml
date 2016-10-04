@@ -10,7 +10,7 @@
     - scala-activator
     - oh-my-zsh
     - wasm
-      #- clang
+    - clang
     - nodejs
   pre_tasks:
     - name: Apt update
@@ -75,3 +75,11 @@
       file: path={{ home }}/source state=directory owner={{ user }}
     - name: Link projects
       file: src=/vagrant/projects dest="{{ home }}/projects" state=link owner={{ user }}
+    - name: Link .gitconfig
+      file: src=/vagrant/.gitconfig dest={{ home }}/.gitconfig state=link owner={{ user }}
+    - name: .bashrc block
+      blockinfile:
+          dest: "{{ home }}/.bashrc"
+          content: |
+              export VISUAL=nvim
+              export EDITOR=nvim

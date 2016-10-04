@@ -47,8 +47,35 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'terryma/vim-expand-region'
 Plug 'iCyMind/NeoSolarized'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neoinclude.vim'
+Plug 'zchee/deoplete-clang'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'pearofducks/ansible-vim'
 call plug#end()
+
+let g:deoplete#sources#clang#libclang_path="/home/ubuntu/source/build/lib/libclang.so"
+let g:deoplete#sources#clang#clang_header="/home/ubuntu/source/build/lib/clang"
+
+" Deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" Tern key goto def
+autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+
+augroup omnifuncs
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup end
+
+" tern
+if exists('g:plugs["tern_for_vim"]')
+    let g:tern_show_argument_hints = 'on_hold'
+    let g:tern_show_signature_in_pum = 1
+    autocmd FileType javascript setlocal omnifunc=tern#Complete
+endif
 
 set termguicolors
 set background=dark
@@ -71,29 +98,36 @@ let maplocalleader = ","
 
 " Open files http://vimcasts.org/episodes/the-edit-command/
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
+nmap <leader>ew :e %%
+nmap <leader>es :sp %%
+nmap <leader>ev :vsp %%
+nmap <leader>et :tabe %%
 
 " Create directory relative to current file
-map <leader>d :!mkdir -p %%
+nmap <leader>d :!mkdir -p %%
 
 " Write file
-map <leader>w :w<cr>
-map <leader>s :w<cr>
+nmap <leader>w :w<cr>
+nmap <leader>s :w<cr>
 
 " :q
-map <leader>q :q<cr>
+nmap <leader>q :q<cr>
 
 " Reload init.vim
 nmap <leader>v :so ~/.config/nvim/init.vim<cr>
 
+" Add four lines and insert into the second
+nmap <leader>z 4O<Esc>3ki
+
 " Neomake
-" autocmd! BufWritePost * Neomake
+autocmd! BufWritePost * Neomake
 
 " Deoplete
-" let g:deoplete#enable_at_startup=1
+let g:deoplete#enable_at_startup=1
+if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose |endif
 
 nmap <C-o> :NERDTreeToggle<CR>
 silent! map <F2> :NERDTreeToggle<CR>
