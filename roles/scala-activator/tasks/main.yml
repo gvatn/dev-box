@@ -37,3 +37,29 @@
 - name: Pip dependencies for ensime
   pip:
     name: websocket-client sexpdata
+
+- name: ensure sbt plugins dir
+  file: path={{ home }}/.sbt/{{ scala_sbt_version }}/plugins state=directory
+
+- name: Ensure user plugins.sbt file
+  file: path="{{ home }}/.sbt/{{ scala_sbt_version }}/plugins/plugins.sbt" state=touch
+
+- name: plugins.sbt block
+  blockinfile:
+    dest: "{{ home }}/.sbt/{{ scala_sbt_version }}/plugins/plugins.sbt"
+    marker: "// { mark } ANSIBLE MANAGED BLOCK"
+    content: |
+      if (sys.props("java.version").startsWith("1.6"))
+        addSbtPlugin("org.ensime" % "sbt-ensime" % "1.0.0")
+      else
+       addSbtPlugin("org.ensime" % "sbt-ensime" % "1.9.1") 
+
+- name: Ensure user build.sbt file
+  file: path="{{ home }}/.sbt/{{ scala_sbt_version }}/plugins/build.sbt" state=touch
+
+- name: plugins.sbt block
+  blockinfile:
+    dest: "{{ home }}/.sbt/{{ scala_sbt_version }}/plugins/build.sbt"
+    marker: "// { mark } ANSIBLE MANAGED BLOCK"
+    content: |
+      addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-M14")

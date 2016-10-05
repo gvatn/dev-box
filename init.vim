@@ -106,9 +106,14 @@ nnoremap <C-p> :CtrlP<CR>
 nnoremap <C-h> :CtrlPBuffer<CR>
 nnoremap <C-j> :CtrlPMRU<CR>
 
+map <silent> \ :call NERDComment('n', 'Toggle')<CR>
+
 " Move a few lines with Shift + j/k
 nnoremap <S-j> 3j
 nnoremap <S-k> 3k
+
+" Hide search highlight on enter
+nnoremap <return> :noh<return><esc>
 
 let mapleader = ","
 let maplocalleader = ","
@@ -135,6 +140,17 @@ nmap <leader>v :so ~/.config/nvim/init.vim<cr>
 
 " Add four lines and insert into the second
 nmap <leader>z 4O<Esc>3ki
+
+" Tab switching
+map <C-Tab> gt
+map <C-S-Tab> gT
+
+" Scroll up/down
+nmap <A-j> <C-E>
+nmap <A-k> <C-Y>
+
+" w!! to write with sudo
+cmap w!! %!sudo tee > /dev/null %
 
 " Neomake
 autocmd! BufWritePost * Neomake

@@ -1,0 +1,11 @@
+---
+- name: Emacs repo
+  apt_repository: repo='ppa:ubuntu-elisp/ppa' state=present
+- name: Emacs install
+  apt: name={{ item }} state=installed
+    with_items:
+      - emacs24
+      - emacs24-el
+      - emacs24-common-non-dfsg
+- name: Spacemacs install
+  git: repo=https://github.com/syl20bnr/spacemacs dest="{{ home }}/.emacs.d"
